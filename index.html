@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Detector</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+        }
+        .container {
+            margin-top: 10px;
+        }
+        .list-group-item {
+            background-color: #333;
+            color: #fff;
+        }
+        #urlInput {
+            width: 1000px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container p-0">
+        <h1 class="text-center">XSS Fuzzer</h1>
+        <form id="xssForm" class="form-inline">
+            <div class="form-group">
+                <input type="url" class="form-control" id="urlInput" placeholder="http://testphp.vulnweb.com/search.php?test=" required>
+            </div>
+            <button type="button" class="btn btn-primary" id="scanButton" onclick="scannow()">Scan</button>
+        </form>
+        <a target="_blank" id="urlListlist"></a>
+    </div>
+    <script>
+        const displayContainer = document.querySelector('#urlListlist');
+
+        function scannow() {
+            var scanbtn = document.querySelector('#urlInput').value;
+            fetch('https://raw.githubusercontent.com/freelancermijan/my-payloads/main/XSS/xss-collected.txt')
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then((data) => {
+                    const lines = data.split('\n');
+                    displayContainer.innerHTML = '';
+                    lines.forEach(line => {
+                        const result = `${scanbtn}${line}`;
+                        const listItem = document.createElement('p');
+                        listItem.innerText = result;
+                        displayContainer.appendChild(listItem);
+                    });
+                })
+                .catch((error) => {
+                    displayContainer.innerText = 'There was an error fetching the data: ' + error.message;
+                });
+        }
+    </script>
+</body>
+</html>
