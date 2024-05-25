@@ -38,7 +38,7 @@
 
         function scannow() {
             var scanbtn = document.querySelector('#urlInput').value;
-            fetch('https://raw.githubusercontent.com/freelancermijan/my-payloads/main/XSS/xss-collected.txt')
+            fetch('https://raw.githubusercontent.com/freelancermijan/my-payloads/main/XSS/all-payloads.txt')
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
